@@ -32,12 +32,26 @@ mixin _$SingleAlternativeController on _SingleAlternativeControllerBase, Store {
           name: '_SingleAlternativeControllerBase', context: context);
 
   @override
-  void validateAlternative() {
+  dynamic setCurrentAlternativeSelected(Alternative newAlternative) {
+    final _$actionInfo =
+        _$_SingleAlternativeControllerBaseActionController.startAction(
+            name:
+                '_SingleAlternativeControllerBase.setCurrentAlternativeSelected');
+    try {
+      return super.setCurrentAlternativeSelected(newAlternative);
+    } finally {
+      _$_SingleAlternativeControllerBaseActionController
+          .endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  bool? validateAlternative({required String reply}) {
     final _$actionInfo =
         _$_SingleAlternativeControllerBaseActionController.startAction(
             name: '_SingleAlternativeControllerBase.validateAlternative');
     try {
-      return super.validateAlternative();
+      return super.validateAlternative(reply: reply);
     } finally {
       _$_SingleAlternativeControllerBaseActionController
           .endAction(_$actionInfo);
