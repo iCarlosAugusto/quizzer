@@ -1,7 +1,12 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:quizzer/events/move_to_next_question_event.dart';
 import 'package:quizzer/screens/quiz.dart';
 
+final getIt = GetIt.instance;
 void main() {
+  getIt.registerSingleton<EventBus>(EventBus());
   runApp(const MyApp());
 }
 

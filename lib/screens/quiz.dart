@@ -1,4 +1,7 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:quizzer/events/move_to_next_question_event.dart';
+import 'package:quizzer/main.dart';
 import 'package:quizzer/models/alternatives_entity.dart';
 import 'package:quizzer/models/game_entity.dart';
 import 'package:quizzer/screens/multiple_alternative_page.dart';
@@ -29,8 +32,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  PageController _pageController = PageController();
+  final PageController pageController = PageController();
 
   List<Alternative> selectedAlternatives = [];
 
@@ -79,29 +81,12 @@ class _MyHomePageState extends State<MyHomePage> {
     )
   ];
 
-  void _incrementCounter() {
 
-    setState(() {
-      _counter++;
-    });
-  }
-
-  validateAlternative ({required Alternative alternative, required List<String> replies}) {
-    bool isCorrect = replies.any((element) => element == alternative.id);
-
-    if(isCorrect) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text("Você acertou!"),
-        )
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text("Resposta errada"),
-        )
-      );
-    }   
+  void moveToNextQuestion () {
+    pageController.nextPage(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.linear
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -112,6 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: PageView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController,
         itemCount: games.length,
         itemBuilder: (_, index) => Column(
           children: [
@@ -120,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 question: games[index].question,
                 alternatives: games[index].alternatives,
                 reply: games[index].reply.first,
+                moveToNextQuestion: moveToNextQuestion
               )
               : MultipleAlternativePage(
                 question: games[index].question,
@@ -129,10 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: ElevatedButton(
-        onPressed: _incrementCounter,
-        child: Text("Responder"),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
