@@ -113,6 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 question: games[index].question,
                 alternatives: games[index].alternatives,
                 reply: games[index].reply,
+                moveToNextQuestion: moveToNextQuestion,
               )
           ],
         ),
